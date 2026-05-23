@@ -37,7 +37,7 @@
         }
 
         /* ==========================================================================
-           HEADER NAVBAR STYLING (ปรับปรุง: ใช้รูปแบบเดียวกันกับบทที่ 3 รองรับทุกหน้าจอ)
+           HEADER NAVBAR STYLING
            ========================================================================== */
         .site-header {
             background-color: #edebe4; /* สีกล่องเมนูครีมเข้ม */
@@ -90,7 +90,7 @@
         }
 
         /* ==========================================================================
-           CONTENT CARDS STYLING (แยกกล่องขาวชัดเจนตามโครงสร้างเว็บแอปของคุณ)
+           CONTENT CARDS STYLING
            ========================================================================== */
         .content-card {
             background: #ffffff;
@@ -130,7 +130,7 @@
         .definition-title { font-weight: 700; color: #2d5246; margin-bottom: 12px; font-size: 1.15rem; }
 
         /* ==========================================================================
-           TABLE STYLING (คอลัมน์ขวาสุดไฮไลท์สีเต็มช่องพาสเทลตามโครงสร้างหลัก)
+           TABLE STYLING
            ========================================================================== */
         .status-table {
             width: 100%;
@@ -161,7 +161,7 @@
         .status-false { background-color: #ffebee; color: #c62828; }
 
         /* ==========================================================================
-           QUIZ STYLING (ปรับรูปแบบกล่องช้อยส์โค้งมนสอดคล้องกัน)
+           QUIZ STYLING
            ========================================================================== */
         .quiz-item-box {
             background: #faf9f5;
@@ -245,6 +245,30 @@
         .btn-next-step { background-color: #2e7d32; color: #ffffff; display: none; }
         .btn-next-step:hover { background-color: #1e5222; }
 
+        /* ==========================================================================
+           FOOTER STYLING
+           ========================================================================== */
+        .site-footer {
+            background-color: #edebe4; /* สีครีมเข้มเข้าคู่กับ Header Navbar */
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .footer-text {
+            font-size: 0.88rem;
+            color: #5c646d;
+            font-weight: 500;
+        }
+        .footer-brand {
+            font-weight: 800;
+            color: #2b5c8f;
+        }
+
         /* Responsive Breakpoints */
         @media (max-width: 990px) {
             .site-header { flex-direction: column; align-items: center; text-align: center; }
@@ -257,6 +281,7 @@
             .status-column { width: 30%; font-size: 0.88rem; }
             .btn-wrapper { flex-direction: column; }
             .action-btn { width: 100%; text-align: center; }
+            .site-footer { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -327,6 +352,14 @@
                 <div id="summary-panel" class="score-summary-panel"></div>
             </div>
         </main>
+
+        <footer class="site-footer">
+            <div class="footer-text">© 2026 K. Senin</div>
+            <div class="footer-text">
+            พัฒนาโดย
+            <a href="https://kantiverse.netlify.app/" target="_blank" class="footer-brand" style="text-decoration: none; transition: color 0.2s ease;">https://kantiverse.netlify.app/</a>
+            </div>
+        </footer>
 
     </div>
 

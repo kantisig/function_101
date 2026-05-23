@@ -256,6 +256,38 @@
             .btn-wrapper { flex-direction: column; }
             .action-btn { width: 100%; text-align: center; }
         }
+            /* ==========================================================================
+   FOOTER STYLING (ก๊อบปี้ส่วนนี้ไปใส่ในแท็ก <style>)
+   ========================================================================== */
+.site-footer {
+    background-color: #edebe4; /* สีครีมเข้มเข้าคู่กับ Header Navbar */
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.footer-text {
+    font-size: 0.88rem;
+    color: #5c646d;
+    font-weight: 500;
+}
+.footer-brand {
+    font-weight: 800;
+    color: #2b5c8f;
+}
+.footer-brand:hover {
+    color: #1e436b; /* สีเมื่อนำเมาส์ไปชี้ลิงก์ */
+    text-decoration: underline;
+}
+
+/* เพิ่มส่วนนี้ใน Media Query (ถ้าในโค้ดเดิมมี @media max-width: 700px อยู่แล้ว ให้เอาบรรทัดล่างนี้ไปแปะเพิ่มด้านในได้เลย) */
+@media (max-width: 700px) {
+    .site-footer { flex-direction: column; text-align: center; }
+}
     </style>
 </head>
 <body>
@@ -322,6 +354,14 @@
 
                 <div id="summary-panel" class="score-summary-panel"></div>
             </div>
+
+            <footer class="site-footer">
+    <div class="footer-text">© 2026 K. Senin</div>
+    <div class="footer-text">
+        พัฒนาโดย 
+        <a href="https://kantiverse.netlify.app/" target="_blank" class="footer-brand">https://kantiverse.netlify.app/</a>
+    </div>
+</footer>
         </main>
 
     </div>
