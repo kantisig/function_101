@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4. ฟังก์ชัน 1-1 (One-to-One Function) - FUNCTION</title>
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* Base Setup & Color Theme */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Sarabun', 'Segoe UI', Tahoma, sans-serif;
+            line-height: 1.7;
+            color: #2c3e50;
+            background-color: #f7f5f0; /* พื้นหลังสีครีมสว่างคงเอกลักษณ์ดั้งเดิม */
+            padding: 30px 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================================================
+           HEADER NAVBAR STYLING (ใช้โครงสร้างสไตล์เว็บแอปที่คุณชอบ)
+           ========================================================================== */
+        .site-header {
+            background-color: #edebe4; /* สีกล่องเมนูครีมเข้ม */
+            border-radius: 20px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap; /* ให้ยุบแถวลงมาด้านล่างได้เมื่อจอแคบลง */
+        }
+        .brand-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2b5c8f; /* สีน้ำเงินโลโก้ FUNCTION */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .navbar-links {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-grow: 1;
+            gap: 5px;
+            flex-wrap: wrap; /* ป้องกันการเกิด Scrollbar ข้อความจะเรียงเต็มหน้าจอเสมอ */
+        }
+        .nav-link {
+            font-size: 0.78rem; /* ขนาดฟอนต์พอดีเรียงแถวเดียวยามจอใหญ่ */
+            font-weight: 600;
+            color: #4a5568;
+            text-decoration: none;
+            text-align: center;
+            padding: 10px 12px;
+            border-radius: 14px;
+            transition: all 0.2s ease;
+            line-height: 1.4;
+            flex: 1 1 auto; /* ให้ปุ่มขยายและจัดสัดส่วนพื้นที่ตามความยาวอักษรเต็มๆ */
+        }
+        .nav-link:hover {
+            color: #2b5c8f;
+        }
+        /* ปุ่มสถานะ Active กล่องสีขาวมนลอยเด่น (เปิดใช้งานที่บทที่ 4) */
+        .nav-link.active {
+            background-color: #ffffff;
+            color: #2b5c8f;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        /* ==========================================================================
+           CONTENT CARDS STYLING 
+           ========================================================================== */
+        .content-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+        }
+
+        .section-title {
+            color: #2b5c8f;
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+        .desc-paragraph {
+            font-size: 0.98rem;
+            color: #4a525a;
+            margin-bottom: 25px;
+            text-indent: 3em;
+            text-align: justify;
+        }
+
+        /* การ์ดข้อมูลแสดงคุณสมบัติย่อยในลักษณะกริด */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .info-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-top: 4px solid #e67e22;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+        }
+        .info-card h3 {
+            margin-top: 0;
+            color: #d35400;
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        /* กล่องตัวอย่างดีไซน์แบบมีกรอบรอบด้าน */
+        .example-box {
+            background-color: #fdf6f0;
+            border: 1px solid #e2e8f0;
+            border-left: 6px solid #e67e22;
+            padding: 25px;
+            margin: 25px 0 10px 0;
+            border-radius: 8px 16px 16px 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);
+        }
+        .example-box ul { margin-left: 20px; margin-top: 10px; }
+        .example-box li { margin-bottom: 10px; color: #4a525a; font-size: 0.95rem; }
+
+        /* ==========================================================================
+           QUIZ STYLING 
+           ========================================================================== */
+        .quiz-item-box {
+            background: #faf9f5;
+            border: 1px solid #edebe4;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .quiz-question-text {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .quiz-item-box label {
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 1px solid #edebe4;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .quiz-item-box label:hover {
+            border-color: #2b5c8f;
+            background-color: #f7f9fb;
+        }
+        .quiz-item-box input[type="radio"] {
+            margin-right: 12px;
+            accent-color: #2b5c8f;
+            transform: scale(1.1);
+        }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 12px 18px;
+            border-radius: 10px;
+            display: none;
+            font-size: 0.92rem;
+        }
+        .score-summary-panel {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        /* Buttons Control */
+        .btn-wrapper {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .action-btn {
+            padding: 12px 30px;
+            font-size: 0.95rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: inherit;
+            border: none;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .btn-submit { background-color: #2b5c8f; color: #ffffff; }
+        .btn-submit:hover { background-color: #1e436b; }
+        .btn-random { background-color: #edebe4; color: #5c646d; }
+        .btn-random:hover { background-color: #dfdbd0; }
+        .btn-next-step { background-color: #2e7d32; color: #ffffff; display: none; }
+        .btn-next-step:hover { background-color: #1e5222; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 990px) {
+            .site-header { flex-direction: column; align-items: center; text-align: center; }
+            .brand-logo { margin-bottom: 5px; }
+            .navbar-links { width: 100%; justify-content: center; }
+        }
+        @media (max-width: 700px) {
+            .content-card { padding: 25px; }
+            .btn-wrapper { flex-direction: column; }
+            .action-btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        
+        <header class="site-header">
+            <div class="brand-logo">Function</div>
+            <nav class="navbar-links">
+                <a href="index.html" class="nav-link">1. บทนิยามของฟังก์ชัน</a>
+                <a href="องค์ประกอบ.html" class="nav-link">2. องค์ประกอบของฟังก์ชัน</a>
+                <a href="even_odd.html" class="nav-link">3. ฟังก์ชันคู่ / ฟังก์ชันคี่</a>
+                <a href="one_to_one.html" class="nav-link active">4. ฟังก์ชัน 1-1</a>
+                <a href="onto.html" class="nav-link">5. ฟังก์ชันทั่วถึง</a>
+                <a href="inverse.html" class="nav-link">6. ฟังก์ชันผกผัน</a>
+                <a href="composite.html" class="nav-link">7. ฟังก์ชันคอมโพสิท</a>
+                <a href="mix_problem.html" class="nav-link">8. คลังโจทย์รวมท้ายบท</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="content-card">
+                <h2 class="section-title">บทนิยามของฟังก์ชัน 1-1</h2>
+                <p class="desc-paragraph">
+                    หลังจากที่เราเข้าใจโครงสร้างและความสมมาตรของฟังก์ชันแล้ว อีกหนึ่งคุณสมบัติที่สำคัญมากในระบบฟังก์ชันคือ <strong>"ฟังก์ชันหนึ่งต่อหนึ่ง" (One-to-One Function หรือเขียนแทนด้วย $1-1$)</strong> ซึ่งเป็นเงื่อนไขพื้นฐานที่จำเป็นอย่างยิ่งในการนำไปใช้สร้างฟังก์ชันผกผัน (Inverse Function) ในระดับสูงต่อไป
+                </p>
+                <p class="desc-paragraph">
+                    ฟังก์ชัน $f$ จากเซต $A$ ไปเซต $B$ จะเป็นฟังก์ชัน $1-1$ ก็ต่อเมื่อ สมาชิกที่แตกต่างกันในโดเมนจับคู่กับสมาชิกที่แตกต่างกันในเรนจ์ นั่นหมายความว่า <strong>ไม่มีสมาชิกตัวหลัง $y$ ตัวใด โดนจับคู่ซ้ำจากสมาชิกตัวหน้า $x$ มากกว่าหนึ่งตัว</strong>
+                </p>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>วิธีเช็กจากรูปแบบเซต / คู่อันดับ</h3>
+                        <p style="font-size: 0.95rem; color: #4a525a;">ให้พิจารณาสมาชิกตัวหลัง ($y$) ในทุก ๆ คู่อันดับอย่างถี่ถ้วน <strong>ห้ามมีค่าซ้ำกันเด็ดขาด</strong> เช่น ถ้าปรากฏคู่ลำดับ $(1, a)$ ภายในเซตแล้ว จะต้องไม่มีคู่อันดับตัวอื่นที่มีตัวหลังเป็นตัวเดิมอย่าง $(2, a)$ โผล่มาอีก</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>วิธีเช็กจากกราฟ (Horizontal Line Test)</h3>
+                        <p style="font-size: 0.95rem; color: #4a525a;">หากเราทำการลากเส้นตรงขนานในแนวนอน (ขนานไปกับแกน X) ตัดผ่านกราฟของฟังก์ชัน เส้นทดสอบนั้นจะต้อง<strong>ตัดผ่านเส้นกราฟได้ไม่เกิน 1 จุดเสมอในทุกช่วง</strong> หากตัดตั้งแต่ 2 จุดขึ้นไป จะไม่ถือว่าเป็นฟังก์ชัน $1-1$</p>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <strong style="color: #d35400; font-size: 1.05rem;">ตัวอย่างเปรียบเทียบ</strong>
+                    <ul>
+                        <li><strong>เป็นฟังก์ชัน 1-1:</strong> $f = \left\{ (1, 2), (2, 4), (3, 6) \right\}$ หรือสมการเส้นตรง $f(x) = 2x$ (สังเกตว่าผลลัพธ์หรือค่า $y$ เป็นเอกลักษณ์ ไม่ซ้ำซ้อนกันเลย)</li>
+                        <li><strong>ไม่เป็นฟังก์ชัน 1-1:</strong> $g = \left\{ (1, 5), (2, 5), (3, 9) \right\}$ หรือสมการพาราโบลา $g(x) = x^2$ (เนื่องจากทั้งพจน์ $x = 1$ และ $x = -1$ ต่างส่งผลลัพธ์ปลายทางไปที่ค่า $y = 1$ เท่ากัน ทำให้เกิดการใช้ตัวหลังซ้ำ)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2 class="section-title">แบบทดสอบ</h2>
+                <div id="quiz-load-zone"></div>
+
+                <div class="btn-wrapper">
+                    <button id="submit-btn" class="action-btn btn-submit" onclick="checkQuizScore()">ตรวจสอบคำตอบ</button>
+                    <button id="reset-btn" class="action-btn btn-random" onclick="buildQuiz()">สุ่มโจทย์ใหม่</button>
+                    <a id="nav-next-btn" href="onto.html" class="action-btn btn-next-step">ไปที่บทเรียน: ฟังก์ชันทั่วถึง →</a>
+                </div>
+
+                <div id="summary-panel" class="score-summary-panel"></div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+    const quizBank = [
+        { relation: '$f = \\left\\{ (1, 2), (3, 4), (5, 6) \\right\\}$', is1to1: true, reason: 'สมาชิกตัวหลังพิกัดคือ 2, 4, 6 แตกต่างกันทั้งหมด ไม่มีตัวใดโดนจับคู่ซ้ำเลย' },
+        { relation: '$f = \\left\\{ (a, x), (b, y), (c, x) \\right\\}$', is1to1: false, reason: 'มีค่า $x$ ในตำแหน่งสมาชิกตัวหลังซ้ำกันในคู่อันดับ $(a, x)$ และ $(c, x)$' },
+        { relation: '$f(x) = 3x + 1$', is1to1: true, reason: 'เป็นฟังก์ชันเชิงเส้นที่มีลักษณะกราฟเป็นเส้นตรงแนวเฉียง เมื่อทดสอบลากเส้นขนานแกน X จะตัดกราฟเพียงจุดเดียวเสมอ' },
+        { relation: '$f(x) = x^2$', is1to1: false, reason: 'เป็นฟังก์ชันพาราโบลาหงาย ซึ่งมีค่าสมมาตร เช่น $f(2) = 4$ และ $f(-2) = 4$ ส่งผลให้ค่าตัวหลังเกิดการซ้ำกัน' },
+        { relation: '$f = \\left\\{ (1, 5), (2, 10), (3, 15) \\right\\}$', is1to1: true, reason: 'สมาชิกเรนจ์ตัวหลังคือ 5, 10, 15 มีค่าต่างกันอย่างสิ้นเชิงในทุกพจน์' },
+        { relation: '$f = \\left\\{ (0, 0), (1, 1), (-1, 1) \\right\\}$', is1to1: false, reason: 'พิกัดตัวหลังมีเลข 1 ซ้ำกันในเงื่อนไขการจับคู่ของโดเมนที่ต่างกัน' },
+        { relation: '$f(x) = x^3$', is1to1: true, reason: 'ฟังก์ชันพหุนามกำลังสาม มีลักษณะกราฟเพิ่มขึ้นทางเดียวตลอดแนว (Monotonic) เส้นขนานแกน X จึงตัดผ่านกราฟเพียงจุดเดียว' },
+        { relation: '$f(x) = |x|$', is1to1: false, reason: 'กราฟรูปตัว V ของค่าสัมบูรณ์ เช่น $f(3) = 3$ และ $f(-3) = 3$ ทำให้เส้นทดสอบแนวนอนตัดกราฟพร้อมกัน 2 จุด' },
+        { relation: '$f(x) = 7$', is1to1: false, reason: 'ฟังก์ชันคงตัว มีกราฟเป็นเส้นตรงราบทับแนวราบทอดตัวขนานแกน X เส้นทดสอบแนวนอนจะทับกราฟสนิทเกิดจุดตัดเป็นจำนวนอนันต์' },
+        { relation: '$f = \\left\\{ (\\text{Red}, 1), (\\text{Blue}, 2), (\\text{Green}, 3) \\right\\}$', is1to1: true, reason: 'สมาชิกเรนจ์ด้านหลังคือ 1, 2, 3 เป็นค่าเอกเทศไม่มีการดึงไปใช้ซ้ำ' },
+        { relation: '$f = \\left\\{ (1, \\text{Pass}), (2, \\text{Pass}) \\right\\}$', is1to1: false, reason: 'ค่าผลลัพธ์ตัวหลังพิมพ์คำว่า \\text{Pass} ซ้ำกันจากโดเมนตัวหน้าคนละตัว' },
+        { relation: '$f(x) = 2x - 5$', is1to1: true, reason: 'สมการกราฟเส้นตรงที่มีความชันคงที่ทแยงขึ้น ทุก ๆ ค่าโดเมน $x$ จึงจับคู่คู่เรนจ์ $y$ ที่เป็นค่าเฉพาะเสมอ' }
+    ];
+
+    function buildQuiz() {
+        const zone = document.getElementById('quiz-load-zone');
+        const summary = document.getElementById('summary-panel');
+        const nextBtn = document.getElementById('nav-next-btn');
+        
+        zone.innerHTML = '';
+        summary.style.display = 'none';
+        nextBtn.style.display = 'none';
+        
+        const mixList = [...quizBank].sort(() => 0.5 - Math.random());
+        const selected = mixList.slice(0, 4);
+        
+        selected.forEach((data, index) => {
+            const num = index + 1;
+            const htmlStructure = `
+                <div class="quiz-item-box" data-answer="${data.is1to1}" data-reason="${data.reason}">
+                    <p class="quiz-question-text">ข้อที่ ${num}: ฟังก์ชัน ${data.relation} จัดเป็นฟังก์ชัน 1-1 หรือไม่?</p>
+                    <div class="options-container">
+                        <label>
+                            <input type="radio" name="question-${num}" value="true"> เป็นฟังก์ชัน 1-1
+                        </label>
+                        <label>
+                            <input type="radio" name="question-${num}" value="false"> ไม่เป็นฟังก์ชัน 1-1
+                        </label>
+                    </div>
+                    <div class="feedback-box"></div>
+                </div>
+            `;
+            zone.insertAdjacentHTML('beforeend', htmlStructure);
+        });
+
+        if (window.MathJax && window.MathJax.typeset) {
+            window.MathJax.typeset();
+        }
+    }
+
+    function checkQuizScore() {
+        const boxes = document.querySelectorAll('.quiz-item-box');
+        const nextBtn = document.getElementById('nav-next-btn');
+        let total = 0;
+        let ready = true;
+
+        boxes.forEach((box, index) => {
+            const check = document.querySelector(`input[name="question-${index+1}"]:checked`);
+            if (!check) ready = false;
+        });
+
+        if (!ready) {
+            alert('โปรดเลือกวิเคราะห์คำตอบให้ครบทุกข้อก่อนตรวจสอบคะแนนครับ');
+            return;
+        }
+
+        boxes.forEach((box, index) => {
+            const chosen = document.querySelector(`input[name="question-${index+1}"]:checked`).value;
+            const userChoice = (chosen === "true");
+            const correctAns = (box.getAttribute('data-answer') === "true");
+            const reason = box.getAttribute('data-reason');
+            const fb = box.querySelector('.feedback-box');
+            
+            fb.style.display = 'block';
+            
+            if (userChoice === correctAns) {
+                total++;
+                fb.style.backgroundColor = '#e8f5e9';
+                fb.style.color = '#2e7d32';
+                fb.innerHTML = `<strong>ถูกต้อง</strong> — เพราะ ${reason}`;
+            } else {
+                fb.style.backgroundColor = '#ffebee';
+                fb.style.color = '#c62828';
+                fb.innerHTML = `<strong>ไม่ถูกต้อง</strong> (คำตอบที่ถูกคือ: ${correctAns ? 'เป็นฟังก์ชัน 1-1' : 'ไม่เป็นฟังก์ชัน 1-1'}) — เพราะ ${reason}`;
+            }
+        });
+
+        const panel = document.getElementById('summary-panel');
+        panel.style.display = 'block';
+        
+        if (total === boxes.length) {
+            panel.style.backgroundColor = '#e8f5e9';
+            panel.style.color = '#2e7d32';
+            panel.innerHTML = `🎉 ยอดเยี่ยม! ตอบถูกหมดจด ได้คะแนนเต็ม ${total} / ${boxes.length}`;
+            nextBtn.style.display = 'inline-block'; 
+        } else {
+            panel.style.backgroundColor = '#fff3e0';
+            panel.style.color = '#e65100';
+            panel.innerHTML = `💡 ลองทบทวนใหม่อีกรอบ! คุณได้คะแนน ${total} / ${boxes.length}`;
+            nextBtn.style.display = 'none';
+        }
+
+        if (window.MathJax && window.MathJax.typeset) {
+            window.MathJax.typeset();
+        }
+    }
+
+    window.onload = buildQuiz;
+    </script>
+</body>
+</html>

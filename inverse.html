@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6. ฟังก์ชันผกผัน - FUNCTION</title>
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* Base Setup & Color Theme */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Sarabun', 'Segoe UI', Tahoma, sans-serif;
+            line-height: 1.7;
+            color: #2c3e50;
+            background-color: #f7f5f0; /* พื้นหลังสีครีมสว่างเอกลักษณ์ดั้งเดิม */
+            padding: 30px 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================================================
+           HEADER NAVBAR STYLING (ปรับตามชุดหลัก ถอดแบบบล็อกเดียวกันเป๊ะ)
+           ========================================================================== */
+        .site-header {
+            background-color: #edebe4; /* สีกล่องเมนูครีมเข้ม */
+            border-radius: 20px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .brand-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2b5c8f; /* สีน้ำเงินโลโก้ FUNCTION */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .navbar-links {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-grow: 1;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        .nav-link {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #4a5568;
+            text-decoration: none;
+            text-align: center;
+            padding: 10px 12px;
+            border-radius: 14px;
+            transition: all 0.2s ease;
+            line-height: 1.4;
+            flex: 1 1 auto;
+        }
+        .nav-link:hover {
+            color: #2b5c8f;
+        }
+        /* ปุ่มสถานะ Active สำหรับหน้าบทที่ 6 (ฟังก์ชันผกผัน) */
+        .nav-link.active {
+            background-color: #ffffff;
+            color: #2b5c8f;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        /* ==========================================================================
+           CONTENT CARDS STYLING (กล่องสีขาวเนียนสบายตา)
+           ========================================================================== */
+        .content-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+        }
+
+        .section-title {
+            color: #2b5c8f;
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+        .desc-paragraph {
+            font-size: 0.98rem;
+            color: #4a525a;
+            margin-bottom: 25px;
+            text-indent: 3em;
+            text-align: justify;
+        }
+        
+        /* ข้อมูลกริดและกล่องย่อยภายใน */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .info-card {
+            background: #faf9f5;
+            border: 1px solid #edebe4;
+            border-top: 4px solid #9b59b6; /* เส้นเน้นสีม่วงประจำเรื่องฟังก์ชันผกผัน */
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .info-card h3 {
+            margin-top: 0;
+            color: #8e44ad;
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .example-box {
+            background-color: #f5eef8; /* สีม่วงอ่อนพาสเทลซอฟต์ตาสำหรับอินเวอร์ส */
+            border-left: 4px solid #9b59b6;
+            padding: 25px 30px;
+            border-radius: 4px 16px 16px 4px;
+            margin-top: 25px;
+        }
+        ul { margin-left: 20px; margin-top: 10px; }
+        li { margin-bottom: 10px; color: #4a525a; font-size: 0.95rem; }
+
+        /* ==========================================================================
+           QUIZ STYLING (คุมดีไซน์โครงสร้างข้อสอบให้เสถียรเท่ากันทุกหน้า)
+           ========================================================================== */
+        .quiz-item-box {
+            background: #faf9f5;
+            border: 1px solid #edebe4;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .quiz-question-text {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .quiz-item-box label {
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 1px solid #edebe4;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .quiz-item-box label:hover {
+            border-color: #2b5c8f;
+            background-color: #f7f9fb;
+        }
+        .quiz-item-box input[type="radio"] {
+            margin-right: 12px;
+            accent-color: #2b5c8f;
+            transform: scale(1.1);
+        }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 12px 18px;
+            border-radius: 10px;
+            display: none;
+            font-size: 0.92rem;
+        }
+        .score-summary-panel {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        /* Buttons Control */
+        .btn-wrapper {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .action-btn {
+            padding: 12px 30px;
+            font-size: 0.95rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: inherit;
+            border: none;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .btn-submit { background-color: #2b5c8f; color: #ffffff; }
+        .btn-submit:hover { background-color: #1e436b; }
+        .btn-random { background-color: #edebe4; color: #5c646d; }
+        .btn-random:hover { background-color: #dfdbd0; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 990px) {
+            .site-header { flex-direction: column; align-items: center; text-align: center; }
+            .brand-logo { margin-bottom: 5px; }
+            .navbar-links { width: 100%; justify-content: center; }
+        }
+        @media (max-width: 700px) {
+            .content-card { padding: 25px; }
+            .info-grid { grid-template-columns: 1fr; }
+            .btn-wrapper { flex-direction: column; }
+            .action-btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        
+        <header class="site-header">
+            <div class="brand-logo">Function</div>
+            <nav class="navbar-links">
+                <a href="index.html" class="nav-link">1. บทนิยามของฟังก์ชัน</a>
+                <a href="องค์ประกอบ.html" class="nav-link">2. องค์ประกอบของฟังก์ชัน</a>
+                <a href="even_odd.html" class="nav-link">3. ฟังก์ชันคู่ / ฟังก์ชันคี่</a>
+                <a href="one_to_one.html" class="nav-link">4. ฟังก์ชัน 1-1</a>
+                <a href="onto.html" class="nav-link">5. ฟังก์ชันทั่วถึง</a>
+                <a href="inverse.html" class="nav-link active">6. ฟังก์ชันผกผัน</a>
+                <a href="composite.html" class="nav-link">7. ฟังก์ชันคอมโพสิท</a>
+                <a href="mix_problem.html" class="nav-link">8. คลังโจทย์รวมท้ายบท</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="content-card">
+                <h2 class="section-title">บทนิยามของฟังก์ชันผกผัน</h2>
+                <p class="desc-paragraph">
+                    ในการศึกษาความสัมพันธ์ ตัวผกผันหรืออินเวอร์ส (Inverse) คือความสัมพันธ์ที่เกิดจากการสลับที่ระหว่างสมาชิกตัวหน้าและสมาชิกตัวหลังในแต่ละคู่อันดับ เขียนแทนด้วยสัญลักษณ์ $f^{-1}$ แต่สิ่งที่ต้องระวังเป็นพิเศษในระดับมัธยมปลายคือ <strong>"อินเวอร์สของฟังก์ชัน ไม่จำเป็นต้องเป็นฟังก์ชันเสมอไป"</strong>
+                </p>
+                <p class="desc-paragraph">
+                    ความสัมพันธ์ผกผัน $f^{-1}$ จะจัดว่าเป็นฟังก์ชันผกผันได้ ก็ต่อเมื่อ ตัวฟังก์ชันเดิม $f$ นั้นมีคุณสมบัติเป็น <strong>ฟังก์ชันหนึ่งต่อหนึ่ง (One-to-One Function หรือ $1-1$)</strong> เท่านั้น หากฟังก์ชันเดิมไม่ใช่ฟังก์ชัน $1-1$ อินเวอร์สที่ได้จะกลายเป็นเพียงความสัมพันธ์ทั่วไป ไม่สามารถเรียกว่าฟังก์ชันผกผันได้
+                </p>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>วิธีหาอินเวอร์สจากรูปแบบเซต</h3>
+                        <p style="text-indent: 0; font-size: 0.95rem; color: #4a525a;">ทำการสลับพิกัดตำแหน่งตรง ๆ ในทุกคู่อันดับ จากพิกัด $(x, y)$ ให้สลับเปลี่ยนเป็น $(y, x)$ โดยที่ค่าของโดเมนในอินเวอร์สจะกลายเป็นเรนจ์ของฟังก์ชันเดิม ($D_{f^{-1}} = R_f$) และเรนจ์ของอินเวอร์สจะกลายเป็นโดเมนเดิม ($R_{f^{-1}} = D_f$)</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>วิธีหาอินเวอร์สจากสมการรูปแบบ $y = f(x)$</h3>
+                        <p style="text-indent: 0; font-size: 0.95rem; color: #4a525a;">มีขั้นตอนหลักคือ 1. สลับตัวแปรในสมการเดิมจาก $x$ เป็น $y$ และจาก $y$ เป็น $x$ 2. ทำการจัดรูปสมการใหม่ให้อยู่ในรูปแบบที่แยกตัวแปร $y$ มาไว้เดี่ยว ๆ ฝั่งซ้ายมือ ($y = \dots$) ผลลัพธ์สมการฝั่งขวาคือสูตรของ $f^{-1}(x)$</p>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <strong style="color: #8e44ad; font-size: 1.05rem;">ตัวอย่างการจัดรูปสมการผกผัน:</strong>
+                    <p style="text-indent: 0; margin-top: 5px; margin-bottom: 5px;">ต้องการหาอินเวอร์สของฟังก์ชันสมการเชิงเส้น $f(x) = 3x - 2$</p>
+                    <ul>
+                        <li>ตั้งสมการเริ่มต้นให้อยู่ในรูป $y$: จะได้ $y = 3x - 2$</li>
+                        <li>ดำเนินการสลับตำแหน่งตัวแปร $x$ และ $y$: จะได้สมการโครงสร้างใหม่เป็น $x = 3y - 2$</li>
+                        <li>จัดรูปสมการย้ายข้างเพื่อเดี่ยวค่า $y$: ย้าย $-2$ ไปบวกได้ $x + 2 = 3y$ จากนั้นย้าย $3$ ไปหาร จะได้ $y = \frac{x+2}{3}$</li>
+                        <li>สรุปผลฟังก์ชันผกผัน: จะได้สูตรคำนวณคือ $f^{-1}(x) = \frac{x+2}{3}$</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2 class="section-title">แบบทดสอบ</h2>
+                <div id="quiz-container"></div>
+
+                <div class="btn-wrapper">
+                    <button id="submit-btn" class="action-btn btn-submit" onclick="checkAnswers()">ส่งคำตอบ</button>
+                    <button id="reset-btn" class="action-btn btn-random" onclick="generateQuiz()">สุ่มโจทย์ใหม่</button>
+                </div>
+
+                <div id="score-board" class="score-summary-panel"></div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+    const itemBank = [
+        { q: 'กำหนดให้ $f(x) = x + 5$ จงหาสูตรของฟังก์ชันผกผัน $f^{-1}(x)$', c1: '$f^{-1}(x) = x - 5$', c2: '$f^{-1}(x) = x + 5$', ans: '$f^{-1}(x) = x - 5$', reason: 'จาก $y = x + 5$ สลับเป็น $x = y + 5$ ย้ายข้างจะได้ $y = x - 5$' },
+        { q: 'กำหนดให้ $f(x) = 4x$ จงหาสูตรของฟังก์ชันผกผัน $f^{-1}(x)$', c1: '$f^{-1}(x) = \\frac{x}{4}$', c2: '$f^{-1}(x) = x - 4$', ans: '$f^{-1}(x) = \\frac{x}{4}$', reason: 'จาก $y = 4x$ สลับตัวแปรเป็น $x = 4y$ ย้าย 4 ที่คูณอยู่ไปหารจะได้ $y = \\frac{x}{4}$' },
+        { q: 'กำหนดให้ $f = \\left\\{ (1, 2), (3, 4) \\right\\}$ อินเวอร์ส $f^{-1}$ คือเซตใด', c1: '$f^{-1} = \\left\\{ (2, 1), (4, 3) \\right\\}$', c2: '$f^{-1} = \\left\\{ (1, 2), (3, 4) \\right\\}$', ans: '$f^{-1} = \\left\\{ (2, 1), (4, 3) \\right\\}$', reason: 'ทำการสลับตำแหน่งตัวหน้าและตัวหลังในทุกคู่อันดับโดยตรง' },
+        { q: 'กำหนดให้ $f(x) = 2x - 3$ จงหาสูตรของฟังก์ชันผกผัน $f^{-1}(x)$', c1: '$f^{-1}(x) = \\frac{x+3}{2}$', c2: '$f^{-1}(x) = \\frac{x-3}{2}$', ans: '$f^{-1}(x) = \\frac{x+3}{2}$', reason: 'จาก $y = 2x - 3$ สลับเป็น $x = 2y - 3$ ย้าย $-3$ ไปบวกแล้วย้าย 2 ไปหาร จะได้ $y = \\frac{x+3}{2}$' },
+        { q: 'ฟังก์ชันกำลังสอง $f(x) = x^2$ ที่มีโดเมนเป็นจำนวนจริงทั้งหมด มีฟังก์ชันผกผันบนโดเมนดังกล่าวหรือไม่', c1: 'ไม่มีฟังก์ชันผกผัน', c2: 'มีฟังก์ชันผกผันคือ $f^{-1}(x) = \\sqrt{x}$', ans: 'ไม่มีฟังก์ชันผกผัน', reason: 'เนื่องจาก $f(x) = x^2$ ไม่ใช่ฟังก์ชัน 1-1 (เช่น พิกัด $x=2$ และ $x=-2$ ได้ผลลัพธ์ $y=4$ ซ้ำกัน) อินเวอร์สของมันจึงไม่เป็นฟังก์ชัน' },
+        { q: 'กำหนดให้ $f(x) = \\frac{x}{3} + 1$ จงหาสูตรของฟังก์ชันผกผัน $f^{-1}(x)$', c1: '$f^{-1}(x) = 3(x - 1)$', c2: '$f^{-1}(x) = 3x - 1$', ans: '$f^{-1}(x) = 3(x - 1)$', reason: 'จาก $y = \\frac{x}{3} + 1$ สลับเป็น $x = \\frac{y}{3} + 1$ ย้าย 1 ไปลบได้ $x-1 = \\frac{y}{3}$ แล้วนำ 3 ไปคูณทั้งก้อนได้ $y = 3(x-1)$' },
+        { q: 'ถ้ากำหนดให้ $f(3) = 8$ แล้วค่าของอินเวอร์ส ณ พิกัดเป้าหมาย $f^{-1}(8)$ จะมีค่าเท่าใด', c1: 'มีค่าเท่ากับ 3', c2: 'มีค่าเท่ากับ 8', ans: 'มีค่าเท่ากับ 3', reason: 'ตามสมบัติพื้นฐานของการสลับแกนคู่พิกัด ถ้าฟังก์ชันส่งจาก 3 ไป 8 อินเวอร์สจะส่งย้อนกลับจาก 8 ไปยัง 3' },
+        { q: 'กำหนดให้ $f(x) = 5 - x$ จงหาสูตรของฟังก์ชันผกผัน $f^{-1}(x)$', c1: '$f^{-1}(x) = 5 - x$', c2: '$f^{-1}(x) = x - 5$', ans: '$f^{-1}(x) = 5 - x$', reason: 'จาก $y = 5 - x$ สลับเป็น $x = 5 - y$ ย้ายสลับข้างเพื่อให้ $y$ เป็นบวก จะได้กลับมาเป็นสมการเดิมคือ $y = 5 - x$' }
+    ];
+
+    function generateQuiz() {
+        const container = document.getElementById('quiz-container');
+        const scoreBoard = document.getElementById('score-board');
+        
+        container.innerHTML = '';
+        scoreBoard.style.display = 'none';
+        
+        const shuffled = [...itemBank].sort(() => 0.5 - Math.random());
+        const selectedQuestions = shuffled.slice(0, 4);
+        
+        selectedQuestions.forEach((item, index) => {
+            const qNum = index + 1;
+            const choices = [item.c1, item.c2];
+            let choicesHtml = '';
+            
+            choices.forEach(choice => {
+                choicesHtml += `
+                    <label>
+                        <input type="radio" name="q${qNum}" value="${choice}"> ${choice}
+                    </label>
+                `;
+            });
+
+            const qHtml = `
+                <div class="quiz-item-box" data-answer="${item.ans}" data-reason="${item.reason}">
+                    <p class="quiz-question-text">ข้อที่ ${qNum}: ${item.q}</p>
+                    <div class="options-container">
+                        ${choicesHtml}
+                    </div>
+                    <div class="feedback-box"></div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', qHtml);
+        });
+
+        if (window.MathJax && window.MathJax.typeset) {
+            window.MathJax.typeset();
+        }
+    }
+
+    function checkAnswers() {
+        const items = document.querySelectorAll('.quiz-item-box');
+        let score = 0;
+        let allAnswered = true;
+
+        items.forEach((item, index) => {
+            const qNum = index + 1;
+            const selected = document.querySelector(`input[name="q${qNum}"]:checked`);
+            if (!selected) allAnswered = false;
+        });
+
+        if (!allAnswered) {
+            alert('กรุณาเลือกวิเคราะห์คำตอบให้ครบทุกข้อก่อนกดส่งตรวจครับ');
+            return;
+        }
+
+        items.forEach((item, index) => {
+            const qNum = index + 1;
+            const selectedValue = document.querySelector(`input[name="q${qNum}"]:checked`).value;
+            const correctAnswer = item.getAttribute('data-answer');
+            const reason = item.getAttribute('data-reason');
+            const feedbackDiv = item.querySelector('.feedback-box');
+            
+            feedbackDiv.style.display = 'block';
+            
+            if (selectedValue === correctAnswer) {
+                score++;
+                feedbackDiv.style.backgroundColor = '#e8f5e9';
+                feedbackDiv.style.color = '#2e7d32';
+                feedbackDiv.innerHTML = `<strong>ถูกต้อง</strong> — ${reason}`;
+            } else {
+                feedbackDiv.style.backgroundColor = '#ffebee';
+                feedbackDiv.style.color = '#c62828';
+                feedbackDiv.innerHTML = `<strong>ไม่ถูกต้อง</strong> (คำตอบที่ถูกคือ: ${correctAnswer}) — ${reason}`;
+            }
+        });
+
+        const scoreBoard = document.getElementById('score-board');
+        scoreBoard.style.display = 'block';
+        
+        if (score === items.length) {
+            scoreBoard.style.backgroundColor = '#e8f5e9';
+            scoreBoard.style.color = '#2e7d32';
+            scoreBoard.innerHTML = `🎉 ยอดเยี่ยมมาก คุณคำนวณและวิเคราะห์ฟังก์ชันผกผันได้คะแนนเต็ม ${score} / ${items.length}`;
+        } else {
+            scoreBoard.style.backgroundColor = '#fff3e0';
+            scoreBoard.style.color = '#e65100';
+            scoreBoard.innerHTML = `💡 คุณได้คะแนน ${score} / ${items.length} คะแนน ทบทวนหลักการย้ายข้างสมการผกผันด้านบน แล้วลองกดปุ่ม "สุ่มโจทย์ใหม่" เพื่อฝึกซ้อมเพิ่มเติมครับ`;
+        }
+
+        if (window.MathJax && window.MathJax.typeset) {
+            window.MathJax.typeset();
+        }
+    }
+
+    window.onload = generateQuiz;
+    </script>
+</body>
+</html>

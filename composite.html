@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7. ฟังก์ชันคอมโพสิท - FUNCTION</title>
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* Base Setup & Color Theme */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Sarabun', 'Segoe UI', Tahoma, sans-serif;
+            line-height: 1.7;
+            color: #2c3e50;
+            background-color: #f7f5f0; /* พื้นหลังสีครีมสว่างคงเอกลักษณ์ */
+            padding: 30px 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================================================
+           HEADER NAVBAR STYLING (ปรับขอบบนให้อยู่ในบล็อกเดียวกันอย่างสมบูรณ์)
+           ========================================================================== */
+        .site-header {
+            background-color: #edebe4; /* สีกล่องเมนูครีมเข้ม */
+            border-radius: 20px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .brand-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2b5c8f; /* สีน้ำเงินสัญลักษณ์หลัก */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .navbar-links {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-grow: 1;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        .nav-link {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #4a5568;
+            text-decoration: none;
+            text-align: center;
+            padding: 10px 12px;
+            border-radius: 14px;
+            transition: all 0.2s ease;
+            line-height: 1.4;
+            flex: 1 1 auto;
+        }
+        .nav-link:hover {
+            color: #2b5c8f;
+        }
+        /* ปุ่มสถานะ Active สำหรับหน้าบทที่ 7 (ฟังก์ชันคอมโพสิท) */
+        .nav-link.active {
+            background-color: #ffffff;
+            color: #2b5c8f;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        /* ==========================================================================
+           CONTENT CARDS STYLING (กล่องเนื้อหาและคุมโทนพาสเทล)
+           ========================================================================== */
+        .content-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+        }
+
+        .section-title {
+            color: #2b5c8f;
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+        .desc-paragraph {
+            font-size: 0.98rem;
+            color: #4a525a;
+            margin-bottom: 25px;
+            text-indent: 3em;
+            text-align: justify;
+        }
+        
+        /* ข้อมูลกริดย่อย */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .info-card {
+            background: #faf9f5;
+            border: 1px solid #edebe4;
+            border-top: 4px solid #e67e22; /* เส้นเน้นสีส้มประจำเรื่องฟังก์ชันคอมโพสิท */
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .info-card h3 {
+            margin-top: 0;
+            color: #d35400;
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .example-box {
+            background-color: #fdf2e9; /* สีส้มพาสเทลซอฟต์สบายตา */
+            border-left: 4px solid #e67e22;
+            padding: 25px 30px;
+            border-radius: 4px 16px 16px 4px;
+            margin-top: 25px;
+        }
+        ul { margin-left: 20px; margin-top: 10px; }
+        li { margin-bottom: 10px; color: #4a525a; font-size: 0.95rem; }
+
+        /* ==========================================================================
+           QUIZ STYLING (ปรับดีไซน์โครงสร้างกล่องคำถามให้เสถียร)
+           ========================================================================== */
+        .quiz-item-box {
+            background: #faf9f5;
+            border: 1px solid #edebe4;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .quiz-question-text {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .quiz-item-box label {
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 1px solid #edebe4;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .quiz-item-box label:hover {
+            border-color: #2b5c8f;
+            background-color: #f7f9fb;
+        }
+        .quiz-item-box input[type="radio"] {
+            margin-right: 12px;
+            accent-color: #2b5c8f;
+            transform: scale(1.1);
+        }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 12px 18px;
+            border-radius: 10px;
+            display: none;
+            font-size: 0.92rem;
+        }
+        .score-summary-panel {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        /* Buttons Control */
+        .btn-wrapper {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .action-btn {
+            padding: 12px 30px;
+            font-size: 0.95rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: inherit;
+            border: none;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .btn-submit { background-color: #2b5c8f; color: #ffffff; }
+        .btn-submit:hover { background-color: #1e436b; }
+        .btn-random { background-color: #edebe4; color: #5c646d; }
+        .btn-random:hover { background-color: #dfdbd0; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 990px) {
+            .site-header { flex-direction: column; align-items: center; text-align: center; }
+            .brand-logo { margin-bottom: 5px; }
+            .navbar-links { width: 100%; justify-content: center; }
+        }
+        @media (max-width: 700px) {
+            .content-card { padding: 25px; }
+            .info-grid { grid-template-columns: 1fr; }
+            .btn-wrapper { flex-direction: column; }
+            .action-btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        
+        <header class="site-header">
+            <div class="brand-logo">Function</div>
+            <nav class="navbar-links">
+                <a href="index.html" class="nav-link">1. บทนิยามของฟังก์ชัน</a>
+                <a href="องค์ประกอบ.html" class="nav-link">2. องค์ประกอบ of ฟังก์ชัน</a>
+                <a href="even_odd.html" class="nav-link">3. ฟังก์ชันคู่ / ฟังก์ชันคี่</a>
+                <a href="one_to_one.html" class="nav-link">4. ฟังก์ชัน 1-1</a>
+                <a href="onto.html" class="nav-link">5. ฟังก์ชันทั่วถึง</a>
+                <a href="inverse.html" class="nav-link">6. ฟังก์ชันผกผัน</a>
+                <a href="composite.html" class="nav-link active">7. ฟังก์ชันคอมโพสิท</a>
+                <a href="mix_problem.html" class="nav-link">8. คลังโจทย์รวมท้ายบท</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="content-card">
+                <h2 class="section-title">บทนิยามของฟังก์ชันคอมโพสิท</h2>
+                <p class="desc-paragraph">
+                    ฟังก์ชันคอมโพสิท (Composite Function) คือกระบวนการนำฟังก์ชันตั้งแต่สองฟังก์ชันขึ้นไปมาดำเนินการร่วมกันในลักษณะส่งทอดผลลัพธ์ต่อกันเป็นทอด ๆ ตัวอย่างเช่นถ้านักเรียนมีฟังก์ชัน $f$ และฟังก์ชัน $g$ การนำผลลัพธ์ของฟังก์ชันแรกไปใช้เป็นตัวแปรต้นของฟังก์ชันถัดไปจะเขียนแทนด้วยสัญลักษณ์ <strong>$(g \circ f)(x)$ อ่านว่า "จีโอเอฟของเอ็กซ์"</strong> ซึ่งมีค่าเท่ากับสมการในรูปแบบ $g(f(x))$
+                </p>
+                <p class="desc-paragraph">
+                    เงื่อนไขสำคัญในระดับมัธยมปลายที่จะทำให้เกิดฟังก์ชันคอมโพสิท $g \circ f$ ได้นั้น ผลลัพธ์หรือเรนจ์ของฟังก์ชันตัวแรกที่คำนวณออกมาก่อน จะต้องมีสมาชิกร่วมกันกับโดเมนหรือตัวแปรต้นที่ฟังก์ชันถัดไปสามารถรับได้ ซึ่งเขียนเป็นเงื่อนไขทางคณิตศาสตร์ได้ว่า <strong>$R_f \cap D_g \neq \varnothing$</strong> หากเซตทั้งสองไม่ตัดกันเลย จะไม่สามารถสร้างฟังก์ชันคอมโพสิทได้</p>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>วิธีหาค่าแบบคู่อันดับ</h3>
+                        <p style="text-indent: 0; font-size: 0.95rem; color: #4a525a;">หากต้องการหาคู่อันดับของ $(g \circ f)(x)$ ให้เริ่มต้นพิจารณาที่ตัวแปรต้น $x$ ส่งเข้าไปในฟังก์ชัน $f$ เพื่อดูว่าได้ผลลัพธ์ $y$ เป็นเลขอะไร จากนั้นนำตัวเลขผลลัพธ์ $y$ ตัวนั้น ส่งต่อไปเป็นตัวแปรต้นในฟังก์ชัน $g$ เพื่อหาคู่พิกัดสุดท้ายออกมา</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>วิธีจัดรูปสมการคอมโพสิท</h3>
+                        <p style="text-indent: 0; font-size: 0.95rem; color: #4a525a;">สำหรับการหาโครงสร้างสมการทั่วไปของ $(g \circ f)(x)$ ให้เปลี่ยนสัญลักษณ์วงกลมเป็นวงเล็บครอบ ได้รูปแบบ $g(f(x))$ จากนั้นนำพหุนามหรือสมการทั้งหมดของ $f(x)$ เข้าไปแทนที่ตำแหน่งตัวแปร $x$ ทุกจุดที่ปรากฏอยู่ในสมการของฟังก์ชัน $g$</p>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <strong style="color: #d35400; font-size: 1.05rem;">ตัวอย่างการคำนวณเชิงสมการ:</strong>
+                    <p style="text-indent: 0; margin-top: 5px; margin-bottom: 5px;">กำหนดให้ $f(x) = x + 3$ และ $g(x) = 2x$</p>
+                    <ul>
+                        <li>ต้องการหาสูตรสมการของ $(g \circ f)(x)$</li>
+                        <li>แปลงความสัมพันธ์ตามนิยาม: จะได้ $(g \circ f)(x) = g(f(x))$</li>
+                        <li>แทนค่าฟังก์ชันชั้นใน: นำสมการของ $f(x)$ ไปใส่ในวงเล็บ ได้ผลลัพธ์เป็น $g(x + 3)$</li>
+                        <li>แทนค่าฟังก์ชันชั้นนอก: นำก้อน $(x + 3)$ ไปแทนที่ตำแหน่งตัวแปร $x$ ในฟังก์ชัน $g$ จะได้ $2(x + 3)$</li>
+                        <li>สรุปสมการสุดท้าย: กระจายตัวเลขเข้ามาในวงเล็บ จะได้สมการคอมโพสิทคือ $(g \circ f)(x) = 2x + 6$</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2 class="section-title">แบบทดสอบ</h2>
+                <div id="quiz-container"></div>
+
+                <div class="btn-wrapper">
+                    <button id="submit-btn" class="action-btn btn-submit" onclick="checkAnswers()">ส่งคำตอบ</button>
+                    <button id="reset-btn" class="action-btn btn-random" onclick="generateQuiz()">สุ่มโจทย์ใหม่</button>
+                </div>
+
+                <div id="score-board" class="score-summary-panel"></div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+    const itemBank = [
+        { q: 'กำหนดให้ $f = \\left\\{ (1, 2), (3, 4) \\right\\}$ และ $g = \\left\\{ (2, 7), (4, 9) \\right\\}$ จงหาค่าของ $(g \\circ f)(1)$', c1: 'มีค่าเท่ากับ 7', c2: 'มีค่าเท่ากับ 9', ans: 'มีค่าเท่ากับ 7', reason: 'เริ่มหาจากด้านใน $f(1) = 2$ จากนั้นส่งต่อไปหาฟังก์ชันนอกจะได้ $g(2) = 7$' },
+        { q: 'กำหนดให้ $f(x) = x + 1$ และ $g(x) = 3x$ จงหาสูตรของฟังก์ชันคอมโพสิท $(g \\circ f)(x)$', c1: '$(g \\circ f)(x) = 3x + 3$', c2: '$(g \\circ f)(x) = 3x + 1$', ans: '$(g \\circ f)(x) = 3x + 3$', reason: 'จาก $g(f(x)) = g(x+1)$ เมื่อแทนค่าในสูตรของ $g$ จะได้ $3(x+1) = 3x + 3$' },
+        { q: 'กำหนดให้ $f(x) = x^2$ และ $g(x) = x - 2$ จงหาสูตรของฟังก์ชันคอมโพสิท $(f \\circ g)(x)$', c1: '$(f \\circ g)(x) = (x - 2)^2$', c2: '$(f \\circ g)(x) = x^2 - 2$', ans: '$(f \\circ g)(x) = (x - 2)^2$', reason: 'เนื่องจาก $(f \\circ g)(x) = f(g(x)) = f(x-2)$ เมื่อนำก้อนนี้ยกกำลังสองตามเงื่อนไขฟังก์ชัน $f$ จึงได้ $(x-2)^2$' },
+        { q: 'กำหนดให้ $f(x) = x + 4$ และ $g(x) = 2x$ จงหาค่าตัวเลขสำเร็จของ $(f \\circ g)(3)$', c1: 'มีค่าเท่ากับ 10', c2: 'มีค่าเท่ากับ 14', ans: 'มีค่าเท่ากับ 10', reason: 'หาค่าฟังก์ชันตัวหลังก่อนจะได้ $g(3) = 2(3) = 6$ จากนั้นนำไปบวกเพิ่มในฟังก์ชันแรกได้ $f(6) = 6 + 4 = 10$' },
+        { q: 'กำหนดฟังก์ชัน $f = \\left\\{ (1, 5) \\right\\}$ และ $g = \\left\\{ (2, 8) \\right\\}$ ฟังก์ชันคอมโพสิท $g \\circ f$ สามารถหาค่าได้หรือไม่', c1: 'หาค่าไม่ได้เนื่องจากเรนจ์ของ f ไม่ตัดกับโดเมนของ g', c2: 'หาค่าได้และตอบเซตว่าง', ans: 'หาค่าไม่ได้เนื่องจากเรนจ์ของ f ไม่ตัดกับโดเมนของ g', reason: 'เนื่องจาก $R_f = \\{5\\}$ และ $D_g = \\{2\\}$ ซึ่งไม่มีสมาชิกร่วมกันเลย ($R_f \\cap D_g = \\varnothing$) จึงไม่เกิดฟังก์ชันคอมโพสิท' },
+        { q: 'กำหนดให้ $f(x) = 5$ (ฟังก์ชันคงตัว) และ $g(x) = x + 10$ จงหาค่าของ $(g \\circ f)(2)$', c1: 'มีค่าเท่ากับ 15', c2: 'มีค่าเท่ากับ 12', ans: 'มีค่าเท่ากับ 15', reason: 'ฟังก์ชันชั้นใน $f(2) = 5$ เสมอเนื่องจากไม่มีตัวแปรให้แทนค่า จากนั้นนำเลข 5 ไปบวกต่อในฟังก์ชัน $g$ จะได้ $5 + 10 = 15$' },
+        { q: 'การสลับที่ของการดำเนินฟังก์ชันคอมโพสิท โดยทั่วไปแล้วสมการ $(g \\circ f)(x)$ จะมีค่าเท่ากับ $(f \\circ g)(x)$ เสมอหรือไม่', c1: 'ไม่เท่ากันเสมอไป การดำเนินการคอมโพสิทไม่มีสมบัติการสลับที่', c2: 'เท่ากันเสมอเนื่องจากเป็นการนำสมการมาซ้อนกัน', ans: 'ไม่เท่ากันเสมอไป การดำเนินการคอมโพสิทไม่มีสมบัติการสลับที่', reason: 'การสลับลำดับการซ้อนฟังก์ชันจะเปลี่ยนฟังก์ชันตัวตั้งและตัวแปรในชั้นใน ส่งผลให้โครงสร้างผลลัพธ์สุดท้ายเปลี่ยนไป' },
+        { q: 'กำหนดให้ $f(x) = x - 3$ จงหาโครงสร้างสมการของฟังก์ชันคอมโพสิทที่ซ้อนตัวเองคือ $(f \\circ f)(x)$', c1: '$(f \\circ f)(x) = x - 6$', c2: '$(f \\circ f)(x) = x^2 - 6x + 9$', ans: '$(f \\circ f)(x) = x - 6$', reason: 'จากคำนิยาม $f(f(x)) = f(x-3)$ นำก้อนนี้ไปลบออกอีก 3 ตามโครงสร้างฟังก์ชันเดิม จะได้ $(x-3)-3 = x-6$' }
+    ];
+
+    function generateQuiz() {
+        const container = document.getElementById('quiz-container');
+        const scoreBoard = document.getElementById('score-board');
+        
+        container.innerHTML = '';
+        scoreBoard.style.display = 'none';
+        
+        const shuffled = [...itemBank].sort(() => 0.5 - Math.random());
+        const selectedQuestions = shuffled.slice(0, 4);
+        
+        selectedQuestions.forEach((item, index) => {
+            const qNum = index + 1;
+            const choices = [item.c1, item.c2];
+            let choicesHtml = '';
+            
+            choices.forEach(choice => {
+                choicesHtml += `
+                    <label>
+                        <input type="radio" name="q${qNum}" value="${choice}"> ${choice}
+                    </label>
+                `;
+            });
+
+            const qHtml = `
+                <div class="quiz-item-box" data-answer="${item.ans}" data-reason="${item.reason}">
+                    <p class="quiz-question-text">ข้อที่ ${qNum}: ${item.q}</p>
+                    <div class="options-container">
+                        ${choicesHtml}
+                    </div>
+                    <div class="feedback-box"></div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', qHtml);
+        });
+
+        if (window.MathJax && window.MathJax.typeset) {
+            window.MathJax.typeset();
+        }
+    }
+
+    function checkAnswers() {
+        const items = document.querySelectorAll('.quiz-item-box');
+        let score = 0;
+        let allAnswered = true;
+
+        items.forEach((item, index) => {
+            const qNum = index + 1;
+            const selected = document.querySelector(`input[name="q${qNum}"]:checked`);
+            if (!selected) allAnswered = false;
+        });
+
+        if (!allAnswered) {
+            alert('กรุณาเลือกวิเคราะห์คำตอบให้ครบทุกข้อก่อนกดส่งตรวจครับ');
+            return;
+        }
+
+        items.forEach((item, index) => {
+            const qNum = index + 1;
+            const selectedValue = document.querySelector(`input[name="q${qNum}"]:checked`).value;
+            const correctAnswer = item.getAttribute('data-answer');
+            const reason = item.getAttribute('data-reason');
+            const feedbackDiv = item.querySelector('.feedback-box');
+            
+            feedbackDiv.style.display = 'block';
+            
+            if (selectedValue === correctAnswer) {
+                score++;
+                feedbackDiv.style.backgroundColor = '#e8f5e9';
+                feedbackDiv.style.color = '#2e7d32';
+                feedbackDiv.innerHTML = `<strong>ถูกต้อง</strong> — ${reason}`;
+            } else {
+                feedbackDiv.style.backgroundColor = '#ffebee';
+                feedbackDiv.style.color = '#c62828';
+                feedbackDiv.innerHTML = `<strong>ไม่ถูกต้อง</strong> (คำตอบที่ถูกคือ: ${correctAnswer}) — ${reason}`;
+            }
+        });
+
+        const scoreBoard = document.getElementById('score-board');
+        scoreBoard.style.display = 'block';
+        
+        if (score === items.length) {
+            scoreBoard.style.backgroundColor = '#e8f5e9';
+            scoreBoard.style.color = '#2e7d32';
+            scoreBoard.innerHTML = `🎉 ยอดเยี่ยมที่สุด ยินดีด้วยที่คุณผ่านการทดสอบเรื่องฟังก์ชันคอมโพสิทครบถ้วนด้วยคะแนนเต็ม ${score} / ${items.length}`;
+        } else {
+            scoreBoard.style.backgroundColor = '#fff3e0';
+            scoreBoard.style.color = '#e65100';
+            scoreBoard.innerHTML = `💡 คุณได้คะแนน ${score} / ${items.length} คะแนน สังเกตลำดับฟังก์ชันหน้าหลังให้ดี แล้วกดปุ่ม "สุ่มโจทย์ใหม่" เพื่อทบทวนอีกครั้งนะครับ`;
+        }
+
+        if (window.MathJax && window.MathJax.typeset) {
+            window.MathJax.typeset();
+        }
+    }
+
+    window.onload = generateQuiz;
+    </script>
+</body>
+</html>

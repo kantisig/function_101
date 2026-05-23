@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5. ฟังก์ชันทั่วถึง - FUNCTION</title>
+
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* Base Setup & Color Theme (ยกมาจากชุดหลัก) */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Sarabun', 'Segoe UI', Tahoma, sans-serif;
+            line-height: 1.7;
+            color: #2c3e50;
+            background-color: #f7f5f0; /* พื้นหลังสีครีมสว่างคงเอกลักษณ์ดั้งเดิม */
+            padding: 30px 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================================================
+           HEADER NAVBAR STYLING (ปรับตามบทที่ 1 ถอดแบบบล็อกเดียวกัน)
+           ========================================================================== */
+        .site-header {
+            background-color: #edebe4; /* สีกล่องเมนูครีมเข้ม */
+            border-radius: 20px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .brand-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2b5c8f; /* สีน้ำเงินโลโก้ FUNCTION */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .navbar-links {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-grow: 1;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        .nav-link {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #4a5568;
+            text-decoration: none;
+            text-align: center;
+            padding: 10px 12px;
+            border-radius: 14px;
+            transition: all 0.2s ease;
+            line-height: 1.4;
+            flex: 1 1 auto;
+        }
+        .nav-link:hover {
+            color: #2b5c8f;
+        }
+        /* ปุ่มสถานะ Active สำหรับหน้าบทที่ 5 */
+        .nav-link.active {
+            background-color: #ffffff;
+            color: #2b5c8f;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        /* ==========================================================================
+           CONTENT CARDS STYLING (ใช้กล่องขาวเหมือนกันทั่วเว็บ)
+           ========================================================================== */
+        .content-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+        }
+
+        .section-title {
+            color: #2b5c8f;
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+        .desc-paragraph {
+            font-size: 0.98rem;
+            color: #4a525a;
+            margin-bottom: 25px;
+            text-indent: 3em;
+            text-align: justify;
+        }
+        
+        /* ข้อมูลกริดและกล่องย่อยภายใน */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .info-card {
+            background: #faf9f5;
+            border: 1px solid #edebe4;
+            border-top: 4px solid #16a085; /* เส้นเน้นสีเขียวประจำเรื่องฟังก์ชันทั่วถึง */
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .info-card h3 {
+            margin-top: 0;
+            color: #117a65;
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .example-box {
+            background-color: #f4f7f6;
+            border-left: 4px solid #16a085;
+            padding: 25px 30px;
+            border-radius: 4px 16px 16px 4px;
+            margin-top: 25px;
+        }
+        ul { margin-left: 20px; margin-top: 10px; }
+        li { margin-bottom: 10px; color: #4a525a; font-size: 0.95rem; }
+
+        /* ==========================================================================
+           QUIZ STYLING (คุมโทนให้แมตช์กับเซตฟังก์ชันหลัก)
+           ========================================================================== */
+        .quiz-item-box {
+            background: #faf9f5;
+            border: 1px solid #edebe4;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .quiz-question-text {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .quiz-item-box label {
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 1px solid #edebe4;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .quiz-item-box label:hover {
+            border-color: #2b5c8f;
+            background-color: #f7f9fb;
+        }
+        .quiz-item-box input[type="radio"] {
+            margin-right: 12px;
+            accent-color: #2b5c8f;
+            transform: scale(1.1);
+        }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 12px 18px;
+            border-radius: 10px;
+            display: none;
+            font-size: 0.92rem;
+        }
+        .score-summary-panel {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        /* Buttons Control */
+        .btn-wrapper {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+        .action-btn {
+            padding: 12px 30px;
+            font-size: 0.95rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: inherit;
+            border: none;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .btn-submit { background-color: #2b5c8f; color: #ffffff; }
+        .btn-submit:hover { background-color: #1e436b; }
+        .btn-random { background-color: #edebe4; color: #5c646d; }
+        .btn-random:hover { background-color: #dfdbd0; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 990px) {
+            .site-header { flex-direction: column; align-items: center; text-align: center; }
+            .brand-logo { margin-bottom: 5px; }
+            .navbar-links { width: 100%; justify-content: center; }
+        }
+        @media (max-width: 700px) {
+            .content-card { padding: 25px; }
+            .info-grid { grid-template-columns: 1fr; }
+            .btn-wrapper { flex-direction: column; }
+            .action-btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        
+        <header class="site-header">
+            <div class="brand-logo">Function</div>
+            <nav class="navbar-links">
+                <a href="index.html" class="nav-link">1. บทนิยามของฟังก์ชัน</a>
+                <a href="องค์ประกอบ.html" class="nav-link">2. องค์ประกอบของฟังก์ชัน</a>
+                <a href="even_odd.html" class="nav-link">3. ฟังก์ชันคู่ / ฟังก์ชันคี่</a>
+                <a href="one_to_one.html" class="nav-link">4. ฟังก์ชัน 1-1</a>
+                <a href="onto.html" class="nav-link active">5. ฟังก์ชันทั่วถึง</a>
+                <a href="inverse.html" class="nav-link">6. ฟังก์ชันผกผัน</a>
+                <a href="composite.html" class="nav-link">7. ฟังก์ชันคอมโพสิท</a>
+                <a href="mix_problem.html" class="nav-link">8. คลังโจทย์รวมท้ายบท</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="content-card">
+                <h2 class="section-title">บทนิยามของฟังก์ชันทั่วถึง</h2>
+                <p class="desc-paragraph">
+                    เมื่อเราพิจารณาการจับคู่ของฟังก์ชันจากเซต $A$ ไปยังเซต $B$ สิ่งที่เราต้องตรวจสอบต่อมาคือสมาชิกในเซตปลายทางถูกใช้หมดหรือไม่ ความสัมพันธ์นี้เรียกว่า <strong>"ฟังก์ชันจาก $A$ ไปทั่วถึง $B$" (Onto Function หรือเขียนแทนด้วย $f: A \xrightarrow{\text{onto}} B$)</strong>
+                </p>
+                <p class="desc-paragraph">
+                    ฟังก์ชัน $f$ จากเซต $A$ ไปเซต $B$ จะเป็นฟังก์ชันทั่วถึง ก็ต่อเมื่อ <strong>เรนจ์ของฟังก์ชันมีค่าเท่ากับโคโดเมนพอดี ($R_f = B$)</strong> นั่นหมายความว่า สมาชิกทุกตัวที่อยู่ในเซตปลายทาง $B$ จะต้องถูกสมาชิกตัวหน้าจากเซต $A$ ลากมาจับคู่ด้วยเสมอ ห้ามมีสมาชิกตัวใดใน $B$ ถูกทิ้งว่างหรือไม่มีคู่
+                </p>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>วิธีเช็กจากรูปแบบเซต / คู่อันดับ</h3>
+                        <p style="text-indent: 0; font-size: 0.95rem; color: #4a525a;">ให้รวบรวมสมาชิกตัวหลังพิกัด ($y$) ทั้งหมดในคู่อันดับมาเขียนรวมกันเป็นเซตของเรนจ์ ($R_f$) จากนั้นนำเซตนั้นไปเทียบกับเซตปลายทาง $B$ ที่โจทย์กำหนดไว้ ถ้าสมาชิกตรงกันทุกตัวพอดี ถือว่าเป็นฟังก์ชันทั่วถึง</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>วิธีเช็กจากสมการกราฟ</h3>
+                        <p style="text-indent: 0; font-size: 0.95rem; color: #4a525a;">ให้พิจารณาการกวาดตัวของกราฟตามแนวแกน Y (ซึ่งคือค่าเรนจ์) ว่าครอบคลุมพื้นที่ทั้งหมดของขอบเขตปลายทางที่กำหนดหรือไม่ เช่น ถ้ากำหนดให้โคโดเมนเป็นเซตของจำนวนจริง กราฟนั้นจะต้องทอดยาวขึ้นบนและลงล่างได้อย่างไม่สิ้นสุด</p>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <strong style="color: #117a65; font-size: 1.05rem;">ตัวอย่างเปรียบเทียบ:</strong>
+                    <p style="text-indent: 0; margin-top: 5px; margin-bottom: 5px;">กำหนดให้ เซตปลายทาง $B = \{a, b\}$</p>
+                    <ul>
+                        <li><strong>เป็นฟังก์ชันทั่วถึง:</strong> $f = \left\{ (1, a), (2, b), (3, a) \right\}$ (เนื่องจากเซตของเรนจ์ $R_f = \{a, b\}$ ซึ่งเท่ากับเซต $B$ พอดี)</li>
+                        <li><strong>ไม่เป็นฟังก์ชันทั่วถึง:</strong> $g = \left\{ (1, a), (2, a), (3, a) \right\}$ (เนื่องจากเซตของเรนจ์ $R_f = \{a\}$ แต่ขาดสมาชิก $b$ ไป ทำให้เรนจ์ไม่เท่ากับโคโดเมน $B$)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2 class="section-title">แบบทดสอบ</h2>
+                <div id="quiz-container"></div>
+
+                <div class="btn-wrapper">
+                    <button id="submit-btn" class="action-btn btn-submit" onclick="checkAnswers()">ส่งคำตอบ</button>
+                    <button id="reset-btn" class="action-btn btn-random" onclick="generateQuiz()">สุ่มโจทย์ใหม่</button>
+                </div>
+
+                <div id="score-board" class="score-summary-panel"></div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+    const itemBank = [
+        { q: '$f = \\left\\{ (1, a), (2, b) \\right\\}$ จาก $A$ ไป $B$ เมื่อ $B = \\{a, b\\}$', ans: 'เป็นฟังก์ชันทั่วถึง', reason: 'เรนจ์คือ $\\{a, b\\}$ ซึ่งตรงกับเซตปลายทาง $B$ ครบทุกตัวพอดี' },
+        { q: '$f = \\left\\{ (1, a), (2, a), (3, a) \\right\\}$ จาก $A$ ไป $B$ เมื่อ $B = \\{a, b\\}$', ans: 'ไม่เป็นฟังก์ชันทั่วถึง', reason: 'เรนจ์มีเพียง $\\{a\\}$ ขาดสมาชิก $b$ ในเซตปลายทางไป ทำให้ใช้งานได้ไม่ทั่วถึง' },
+        { q: '$f(x) = 2x$ เป็นฟังก์ชันจาก $\\mathbb{R}$ ไปยัง $\\mathbb{R}$', ans: 'เป็นฟังก์ชันทั่วถึง', reason: 'ฟังก์ชันเชิงเส้น (เส้นตรงแนวเฉียง) มีค่าเรนจ์ครอบคลุมจำนวนจริงทุกค่าตั้งแต่ $-\\infty$ ถึง $+\\infty$' },
+        { q: '$f(x) = x^2$ เป็นฟังก์ชันจาก $\\mathbb{R}$ ไปยัง $\\mathbb{R}$', ans: 'ไม่เป็นฟังก์ชันทั่วถึง', reason: 'เนื่องจาก $x^2 \\ge 0$ เสมอ ทำให้เรนจ์ได้เฉพาะจำนวนจริงบวกและศูนย์ ไม่สามารถได้ค่าจำนวนจริงลบตามโคโดเมน' },
+        { q: '$f = \\left\\{ (x, y) \\in \\mathbb{A} \\times \\mathbb{B} \\mid y = x + 1 \\right\\}$ เมื่อ $A = \\{1, 2\\}, B = \\{2, 3\\}$', ans: 'เป็นฟังก์ชันทั่วถึง', reason: 'แทนค่าได้คู่อันดับ $\\{(1,2), (2,3)\\}$ จะเห็นว่าเรนจ์คือ $\\{2, 3\\}$ เท่ากับเซต $B$ พอดี' },
+        { q: '$f(x) = |x|$ เป็นฟังก์ชันจาก $\\mathbb{R}$ ไปยัง $\\mathbb{R}$', ans: 'ไม่เป็นฟังก์ชันทั่วถึง', reason: 'ค่าสัมบูรณ์ถอดออกมาจะไม่มีทางติดลบ ส่งผลให้ไม่มีค่า $x$ ใดที่จับคู่กับค่า $y$ ที่เป็นจำนวนลบในโคโดเมนได้' },
+        { q: '$f(x) = x^3$ เป็นฟังก์ชันจาก $\\mathbb{R}$ ไปยัง $\\mathbb{R}$', ans: 'เป็นฟังก์ชันทั่วถึง', reason: 'เนื่องจากการยกกำลังสามสามารถให้ผลลัพธ์เป็นได้ทั้งจำนวนบวก ศูนย์ และจำนวนลบ จึงกวาดเรนจ์ได้ครบจำนวนจริงทั้งหมด' },
+        { q: '$f = \\left\\{ (3, 9), (4, 16) \\right\\}$ จาก $A$ ไป $B$ เมื่อ $B = \\{9, 16, 25\\}$', ans: 'ไม่เป็นฟังก์ชันทั่วถึง', reason: 'เซตเรนจ์ตัวหลังได้เพียง $\\{9, 16\\}$ แต่โคโดเมน $B$ มีเลข 25 อยู่ด้วย สมาชิกจึงเหลือและไม่เท่ากัน' },
+        { q: '$f(x) = 5$ เป็นฟังก์ชันจาก $\\mathbb{R}$ ไปยัง $\\mathbb{R}$', ans: 'ไม่เป็นฟังก์ชันทั่วถึง', reason: 'เป็นฟังก์ชันคงตัวที่มีเรนจ์เพียงค่าเดียวคือ $\\{5\\}$ ไม่สามารถกระจายค่าได้เท่ากับเซตของจำนวนจริง' },
+        { q: '$f(x) = x^2$ เป็นฟังก์ชันจาก $\\mathbb{R}$ ไปยัง $\\mathbb{R}^+ \\cup \\{0\\}$', ans: 'เป็นฟังก์ชันทั่วถึง', reason: 'เนื่องจากโจทย์จำกัดขอบเขตโคโดเมนปลายทางไว้แค่จำนวนจริงบวกและศูนย์ ซึ่งตรงกับเรนจ์ของพาราโบลาพอดี' }
+    ];
+
+    function generateQuiz() {
+        const container = document.getElementById('quiz-container');
+        const scoreBoard = document.getElementById('score-board');
+        
+        container.innerHTML = '';
+        scoreBoard.style.display = 'none';
+        
+        const shuffled = [...itemBank].sort(() => 0.5 - Math.random());
+        const selectedQuestions = shuffled.slice(0, 4);
+        
+        selectedQuestions.forEach((item, index) => {
+            const qNum = index + 1;
+            const choices = ['เป็นฟังก์ชันทั่วถึง', 'ไม่เป็นฟังก์ชันทั่วถึง'];
+            let choicesHtml = '';
+            
+            choices.forEach(choice => {
+                choicesHtml += `
+                    <label>
+                        <input type="radio" name="q${qNum}" value="${choice}"> ${choice}
+                    </label>
+                `;
+            });
+
+            const qHtml = `
+                <div class="quiz-item-box" data-answer="${item.ans}" data-reason="${item.reason}">
+                    <p class="quiz-question-text">ข้อที่ ${qNum}: ฟังก์ชัน ${item.q} จัดเป็นฟังก์ชันประเภทใด</p>
+                    <div class="options-container">
+                        ${choicesHtml}
+                    </div>
+                    <div class="feedback-box"></div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', qHtml);
+        });
+
+        if (window.MathJax && window.MathJax.typeset) {
+            window.MathJax.typeset();
+        }
+    }
+
+    function checkAnswers() {
+        const items = document.querySelectorAll('.quiz-item-box');
+        let score = 0;
+        let allAnswered = true;
+
+        items.forEach((item, index) => {
+            const qNum = index + 1;
+            const selected = document.querySelector(`input[name="q${qNum}"]:checked`);
+            if (!selected) allAnswered = false;
+        });
+
+        if (!allAnswered) {
+            alert('กรุณาเลือกวิเคราะห์คำตอบให้ครบทุกข้อก่อนกดส่งตรวจครับ');
+            return;
+        }
+
+        items.forEach((item, index) => {
+            const qNum = index + 1;
+            const selectedValue = document.querySelector(`input[name="q${qNum}"]:checked`).value;
+            const correctAnswer = item.getAttribute('data-answer');
+            const reason = item.getAttribute('data-reason');
+            const feedbackDiv = item.querySelector('.feedback-box');
+            
+            feedbackDiv.style.display = 'block';
+            
+            if (selectedValue === correctAnswer) {
+                score++;
+                feedbackDiv.style.backgroundColor = '#e8f5e9';
+                feedbackDiv.style.color = '#2e7d32';
+                feedbackDiv.innerHTML = `<strong>ถูกต้อง</strong> — เพราะ ${reason}`;
+            } else {
+                feedbackDiv.style.backgroundColor = '#ffebee';
+                feedbackDiv.style.color = '#c62828';
+                feedbackDiv.innerHTML = `<strong>ไม่ถูกต้อง</strong> (คำตอบที่ถูกคือ: ${correctAnswer}) — เพราะ ${reason}`;
+            }
+        });
+
+        const scoreBoard = document.getElementById('score-board');
+        scoreBoard.style.display = 'block';
+        
+        if (score === items.length) {
+            scoreBoard.style.backgroundColor = '#e8f5e9';
+            scoreBoard.style.color = '#2e7d32';
+            scoreBoard.innerHTML = `🎉 ยอดเยี่ยมที่สุด! คุณผ่านการทดสอบเรื่องฟังก์ชันทั่วถึงครบถ้วนด้วยคะแนนเต็ม ${score} / ${items.length}`;
+        } else {
+            scoreBoard.style.backgroundColor = '#fff3e0';
+            scoreBoard.style.color = '#e65100';
+            scoreBoard.innerHTML = `💡 ลองทบทวนใหม่อีกรอบ! คุณได้คะแนน ${score} / ${items.length} คะแนน ลองอ่านเหตุผลแล้วกดปุ่ม "สุ่มโจทย์ใหม่" ได้เลยครับ`;
+        }
+
+        if (window.MathJax && window.MathJax.typeset) {
+            window.MathJax.typeset();
+        }
+    }
+
+    window.onload = generateQuiz;
+    </script>
+</body>
+</html>
