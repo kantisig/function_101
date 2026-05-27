@@ -242,14 +242,12 @@
         .btn-submit:hover { background-color: #1e436b; }
         .btn-random { background-color: #edebe4; color: #5c646d; }
         .btn-random:hover { background-color: #dfdbd0; }
-        .btn-next-step { background-color: #2e7d32; color: #ffffff; display: none; }
-        .btn-next-step:hover { background-color: #1e5222; }
 
         /* ==========================================================================
            FOOTER STYLING
            ========================================================================== */
         .site-footer {
-            background-color: #edebe4; /* สีครีมเข้มเข้าคู่กับ Header Navbar */
+            background-color: #edebe4;
             border-radius: 20px;
             padding: 20px;
             margin-top: 30px;
@@ -352,7 +350,6 @@
                 <div class="btn-wrapper">
                     <button id="submit-btn" class="action-btn btn-submit" onclick="checkQuizScore()">ตรวจสอบคำตอบ</button>
                     <button id="reset-btn" class="action-btn btn-random" onclick="buildQuiz()">สุ่มโจทย์ใหม่</button>
-                    <a id="nav-next-btn" href="องค์ประกอบ.html" class="action-btn btn-next-step">ไปที่บทเรียน: องค์ประกอบของฟังก์ชัน →</a>
                 </div>
 
                 <div id="summary-panel" class="score-summary-panel"></div>
@@ -370,7 +367,6 @@
     </div>
 
     <script>
-    // ปรับเหตุผล (reason) ให้ปลอดภัย ไม่มีตัวแปรคณิตศาสตร์ไปชนกับปุ่มกดตรวจคำตอบ
     const quizBank = [
         // --- โซนคู่อันดับเดิม (เป็นฟังก์ชัน) ---
         { relation: '{(1, "A"), (2, "B"), (3, "C"), (4, "D")}', isFunction: true, reason: 'สมาชิกตัวหน้าทุกตัวแตกต่างกัน จึงจับคู่กับสมาชิกตัวหลังเพียงตัวเดียว' },
@@ -388,7 +384,7 @@
 
         // --- 🆕 โซนสมการ (เป็นฟังก์ชัน) ---
         { relation: '$y = 2x + 1$', isFunction: true, reason: 'เป็นสมการเส้นตรง เมื่อแทนค่า x ใด ๆ ลงไป จะได้ค่า y ออกมาเพียงค่าเดียวเสมอ' },
-        { relation: '$y = x^2$', isFunction: true, reason: 'เป็นสมการพาราโบลา แม้ x = 2 และ x = -2 จะได้ค่า y = 4 เหมือนกัน แต่ x แต่ละตัวให้ค่า y เพียงค่าเดียว' },
+        { relation: '$y = x^2$', isFunction: true, reason: 'เป็นสมการพาราโบลา แม้ x = 2 และ x = -2 จะได้ค่า y = 4 เหมือนกัน แต่ x 各ตัวให้ค่า y เพียงค่าเดียว' },
         { relation: '$y = |x|$', isFunction: true, reason: 'ฟังก์ชันค่าสัมบูรณ์ เมื่อแทนค่า x ใด ๆ จะได้ผลลัพธ์ y ที่เป็นบวกเพียงค่าเดียวเท่านั้น' },
         { relation: '$y = x^3 - x$', isFunction: true, reason: 'สมการพหุนามดีกรี 3 เมื่อแทนค่า x หนึ่งค่า จะคำนวณได้ค่า y ออกมาคู่กันเพียงค่าเดียวเสมอ' },
         { relation: '$y = \\sqrt{x}$', isFunction: true, reason: 'เงื่อนไขของเครื่องหมายรากที่สอง (Root) จะนิยามเฉพาะผลลัพธ์ที่เป็นบวกหรือศูนย์เพียงค่าเดียวเท่านั้น' },
@@ -404,11 +400,9 @@
     function buildQuiz() {
         const zone = document.getElementById('quiz-load-zone');
         const summary = document.getElementById('summary-panel');
-        const nextBtn = document.getElementById('nav-next-btn');
         
         zone.innerHTML = '';
         summary.style.display = 'none';
-        nextBtn.style.display = 'none';
         
         const mixList = [...quizBank].sort(() => 0.5 - Math.random());
         const selected = mixList.slice(0, 4);
@@ -416,7 +410,7 @@
         selected.forEach((data, index) => {
             const num = index + 1;
             
-            // ใช้เทคนิคเข้ารหัส Base64 กับแอตทริบิวต์ data-reason เพื่อป้องกันบั๊ก HTML เอ๋อ 100%
+            // ใช้เทคนิคเข้ารหัส Base64 ป้องกันเครื่องหมายคำพูดพังโครงสร้าง HTML
             const encodedReason = btoa(unescape(encodeURIComponent(data.reason)));
             
             const htmlStructure = `
@@ -438,20 +432,16 @@
             zone.insertAdjacentHTML('beforeend', htmlStructure);
         });
 
-        // สั่งให้ MathJax แปลงข้อความ $...$ เป็นสมการทันทีหลังจากพ่น HTML
         if (window.MathJax && window.MathJax.typeset) {
             window.MathJax.typeset();
         }
     }
 
-    // ฟังก์ชันตรวจคะแนนและเฉลยเหตุผล (ที่ของเดิมขาดหายไป)
     function checkQuizScore() {
         const boxes = document.querySelectorAll('.quiz-item-box');
-        const nextBtn = document.getElementById('nav-next-btn');
         let total = 0;
         let ready = true;
 
-        // ตรวจว่าทำครบหรือยัง
         boxes.forEach((box, index) => {
             const check = document.querySelector(`input[name="question-${index+1}"]:checked`);
             if (!check) ready = false;
@@ -462,13 +452,11 @@
             return;
         }
 
-        // ตรวจให้คะแนน
         boxes.forEach((box, index) => {
             const chosen = document.querySelector(`input[name="question-${index+1}"]:checked`).value;
             const userChoice = (chosen === "true");
             const correctAns = (box.getAttribute('data-answer') === "true");
             
-            // ถอดรหัส Base64 กลับมาเป็นข้อความภาษาไทยปกติ
             const encodedReason = box.getAttribute('data-reason');
             const reason = decodeURIComponent(escape(atob(encodedReason)));
             
@@ -487,7 +475,6 @@
             }
         });
 
-        // แสดงสถิติรวมด้านล่างสุด
         const panel = document.getElementById('summary-panel');
         panel.style.display = 'block';
         
@@ -495,12 +482,10 @@
             panel.style.backgroundColor = '#e8f5e9';
             panel.style.color = '#2e7d32';
             panel.innerHTML = `🎉 ยอดเยี่ยม! ตอบถูกหมดจด ได้คะแนนเต็ม ${total} / ${boxes.length}`;
-            nextBtn.style.display = 'inline-block'; 
         } else {
             panel.style.backgroundColor = '#fff3e0';
             panel.style.color = '#e65100';
             panel.innerHTML = `💡 ลองทบทวนใหม่อีกรอบ! คุณได้คะแนน ${total} / ${boxes.length}`;
-            nextBtn.style.display = 'none';
         }
     }
 
