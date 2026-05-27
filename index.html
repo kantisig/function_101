@@ -267,6 +267,12 @@
         .footer-brand {
             font-weight: 800;
             color: #2b5c8f;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .footer-brand:hover {
+            color: #1e436b;
+            text-decoration: underline;
         }
 
         /* Responsive Breakpoints */
@@ -356,35 +362,43 @@
         <footer class="site-footer">
             <div class="footer-text">© 2026 K. Senin</div>
             <div class="footer-text">
-            พัฒนาโดย
-            <a href="https://kantiverse.netlify.app/" target="_blank" class="footer-brand" style="text-decoration: none; transition: color 0.2s ease;">https://kantiverse.netlify.app/</a>
+                พัฒนาโดย
+                <a href="https://kantiverse.netlify.app/" target="_blank" class="footer-brand">https://kantiverse.netlify.app/</a>
             </div>
         </footer>
 
     </div>
 
     <script>
+    // ปรับเหตุผล (reason) ให้ปลอดภัย ไม่มีตัวแปรคณิตศาสตร์ไปชนกับปุ่มกดตรวจคำตอบ
     const quizBank = [
+        // --- โซนคู่อันดับเดิม (เป็นฟังก์ชัน) ---
         { relation: '{(1, "A"), (2, "B"), (3, "C"), (4, "D")}', isFunction: true, reason: 'สมาชิกตัวหน้าทุกตัวแตกต่างกัน จึงจับคู่กับสมาชิกตัวหลังเพียงตัวเดียว' },
         { relation: '{(1, "A"), (2, "A"), (3, "A")}', isFunction: true, reason: 'แม้สมาชิกตัวหลังจะเป็น "A" เหมือนกัน แต่สมาชิกตัวหน้าแต่ละตัวต่างจับคู่ของตนเองเพียงตัวเดียว' },
         { relation: '{(-1, 1), (0, 0), (1, 1)}', isFunction: true, reason: 'สมาชิกตัวหน้าทุกตัวแตกต่างกัน และไม่มีตัวหน้าตัวใดจับคู่กับตัวหลังมากกว่าหนึ่งตัว' },
-        { relation: '{(7, "X"), (8, "Y"), (9, "Z")}', isFunction: true, reason: 'สมาชิกตัวหน้าไม่มีการจับคู่ซ้ำกับสมาชิกตัวหลังที่ต่างกัน' },
         { relation: '{(2, 4), (3, 6), (4, 8), (5, 10)}', isFunction: true, reason: 'สมาชิกตัวหน้าทุกตัวจับคู่กับผลลัพธ์ตัวหลังเพียงตัวเดียวตามความสัมพันธ์' },
-        { relation: '{("ก", 1), ("ข", 2), ("ค", 3)}', isFunction: true, reason: 'สมาชิกตัวหน้าแต่ละตัวไม่มีการจับคู่ซ้ำซ้อน' },
         { relation: '{(10, 5), (20, 5), (30, 5), (40, 5)}', isFunction: true, reason: 'การที่สมาชิกตัวหลังซ้ำกันไม่ผิดนิยาม ตราบใดที่สมาชิกตัวหน้าไม่จับคู่กับตัวหลังหลายตัว' },
-        { relation: '{(-2, 4), (-1, 1), (1, 1), (2, 4)}', isFunction: true, reason: 'สมาชิกตัวหน้าทุกตัวแตกต่างกันและจับคู่กับสมาชิกตัวหลังเพียงตัวเดียว' },
-        { relation: '{(0, 0), (1, 2), (2, 4), (3, 6)}', isFunction: true, reason: 'สมาชิกตัวหน้าทุกตัวแตกต่างกันอย่างชัดเจนและมีคู่เพียงตัวเดียว' },
-        { relation: '{(100, "Pass"), (101, "Fail"), (102, "Pass")}', isFunction: true, reason: 'สมาชิกตัวหน้าแต่ละตัวส่งไปยังผลลัพธ์ตัวหลังเพียงค่าเดียว' },
+
+        // --- โซนคู่อันดับเดิม (ไม่เป็นฟังก์ชัน) ---
         { relation: '{(5, 10), (6, 12), (5, 15)}', isFunction: false, reason: 'พบสมาชิกตัวหน้าคือ 5 จับคู่กับสมาชิกตัวหลังที่แตกต่างกันสองตัว คือ 10 และ 15' },
         { relation: '{(a, "นก"), (b, "ไม้"), (a, "ปลา")}', isFunction: false, reason: 'พบสมาชิกตัวหน้าคือ a จับคู่กับสมาชิกตัวหลังที่แตกต่างกันสองตัว คือ นก และ ปลา' },
         { relation: '{(2, 4), (2, -4), (3, 9), (3, -9)}', isFunction: false, reason: 'พบสมาชิกตัวหน้าคือ 2 และ 3 จับคู่กับสมาชิกตัวหลังมากกว่าหนึ่งตัว' },
-        { relation: '{(0, "ก"), (0, "ข"), (0, "ค")}', isFunction: false, reason: 'พบสมาชิกตัวหน้าคือ 0 จับคู่กับสมาชิกตัวหลังที่แตกต่างกันถึงสามตัว' },
         { relation: '{(1, 2), (3, 4), (1, 6), (5, 8)}', isFunction: false, reason: 'พบสมาชิกตัวหน้าคือ 1 จับคู่กับสมาชิกตัวหลังที่แตกต่างกันสองตัว คือ 2 และ 6' },
-        { relation: '{(9, 3), (9, -3), (16, 4)}', isFunction: false, reason: 'พบสมาชิกตัวหน้าคือ 9 จับคู่กับสมาชิกตัวหลังที่แตกต่างกันสองตัว คือ 3 และ -3' },
-        { relation: '{("แดง", "รถ"), ("ดำ", "เรือ"), ("แดง", "เครื่องบิน")}', isFunction: false, reason: 'พบสมาชิกตัวหน้าคือ แดง จับคู่กับสมาชิกตัวหลังที่แตกต่างกันสองตัว คือ รถ และ เครื่องบิน' },
-        { relation: '{(1, 1), (2, 2), (3, 3), (2, 4)}', isFunction: false, reason: 'พบสมาชิกตัวหน้าคือ 2 จับคู่กับสมาชิกตัวหลังที่แตกต่างกันสองตัว คือ 2 และ 4' },
-        { relation: '{(7, 7), (8, 8), (7, 9)}', isFunction: false, reason: 'พบสมาชิกตัวหน้าคือ 7 จับคู่กับสมาชิกตัวหลังที่แตกต่างกันสองตัว คือ 7 และ 9' },
-        { relation: '{(0, 1), (1, 1), (0, 2)}', isFunction: false, reason: 'พบสมาชิกตัวหน้าคือ 0 จับคู่กับสมาชิกตัวหลังที่แตกต่างกันสองตัว คือ 1 และ 2' }
+        { relation: '{(0, 1), (1, 1), (0, 2)}', isFunction: false, reason: 'พบสมาชิกตัวหน้าคือ 0 จับคู่กับสมาชิกตัวหลังที่แตกต่างกันสองตัว คือ 1 และ 2' },
+
+        // --- 🆕 โซนสมการ (เป็นฟังก์ชัน) ---
+        { relation: '$y = 2x + 1$', isFunction: true, reason: 'เป็นสมการเส้นตรง เมื่อแทนค่า x ใด ๆ ลงไป จะได้ค่า y ออกมาเพียงค่าเดียวเสมอ' },
+        { relation: '$y = x^2$', isFunction: true, reason: 'เป็นสมการพาราโบลา แม้ x = 2 และ x = -2 จะได้ค่า y = 4 เหมือนกัน แต่ x แต่ละตัวให้ค่า y เพียงค่าเดียว' },
+        { relation: '$y = |x|$', isFunction: true, reason: 'ฟังก์ชันค่าสัมบูรณ์ เมื่อแทนค่า x ใด ๆ จะได้ผลลัพธ์ y ที่เป็นบวกเพียงค่าเดียวเท่านั้น' },
+        { relation: '$y = x^3 - x$', isFunction: true, reason: 'สมการพหุนามดีกรี 3 เมื่อแทนค่า x หนึ่งค่า จะคำนวณได้ค่า y ออกมาคู่กันเพียงค่าเดียวเสมอ' },
+        { relation: '$y = \\sqrt{x}$', isFunction: true, reason: 'เงื่อนไขของเครื่องหมายรากที่สอง (Root) จะนิยามเฉพาะผลลัพธ์ที่เป็นบวกหรือศูนย์เพียงค่าเดียวเท่านั้น' },
+
+        // --- 🆕 โซนสมการ (ไม่เป็นฟังก์ชัน) ---
+        { relation: '$y = \\pm x$', isFunction: false, reason: 'เมื่อแทน x ด้วยค่าใด ๆ (ยกเว้น 0) จะได้ค่า y ออกมาสองค่าคู่กันเสมอ เช่น ถ้า x = 3 จะได้ y = 3 และ y = -3' },
+        { relation: '$y^2 = x$', isFunction: false, reason: 'เมื่อแทน x = 4 จะได้ y ยกกำลังสองเท่ากับ 4 ซึ่งทำให้ y เป็นไปได้สองค่าคือ 2 และ -2' },
+        { relation: '$|y| = x$', isFunction: false, reason: 'เมื่อแทน x = 5 จะได้ ค่าสัมบูรณ์ของ y เท่ากับ 5 ซึ่งทำให้ค่า y เป็นไปได้ทั้ง 5 และ -5' },
+        { relation: '$x^2 + y^2 = 9$', isFunction: false, reason: 'สมการวงกลม เมื่อแทนค่า x = 0 จะได้ y ยกกำลังสองเท่ากับ 9 ซึ่งทำให้ค่า y เป็นไปได้สองค่าคือ 3 และ -3' },
+        { relation: '$y^4 = x$', isFunction: false, reason: 'เนื่องจาก y ยกกำลังเลขคู่ (ดีกรี 4) เมื่อแทน x = 16 จะได้ y เป็นไปได้สองค่าคือ 2 และ -2' }
     ];
 
     function buildQuiz() {
@@ -401,9 +415,15 @@
         
         selected.forEach((data, index) => {
             const num = index + 1;
+            
+            // ใช้เทคนิคเข้ารหัส Base64 กับแอตทริบิวต์ data-reason เพื่อป้องกันบั๊ก HTML เอ๋อ 100%
+            const encodedReason = btoa(unescape(encodeURIComponent(data.reason)));
+            
             const htmlStructure = `
-                <div class="quiz-item-box" data-answer="${data.isFunction}" data-reason="${data.reason}">
-                    <p class="quiz-question-text">ข้อที่ ${num}: ความสัมพันธ์ <code style="background:#f0ece6; padding:3px 8px; border-radius:6px; font-family:monospace; font-size:0.95rem; color:#1e293b;">${data.relation}</code> ถือว่าเป็นฟังก์ชันหรือไม่?</p>
+                <div class="quiz-item-box" data-answer="${data.isFunction}" data-reason="${encodedReason}">
+                    <p class="quiz-question-text">
+                        ข้อที่ ${num}: ความสัมพันธ์ <span style="color:#2b5c8f; font-weight:600;">${data.relation}</span> ถือว่าเป็นฟังก์ชันหรือไม่?
+                    </p>
                     <div class="options-container">
                         <label>
                             <input type="radio" name="question-${num}" value="true"> เป็นฟังก์ชัน
@@ -418,17 +438,20 @@
             zone.insertAdjacentHTML('beforeend', htmlStructure);
         });
 
+        // สั่งให้ MathJax แปลงข้อความ $...$ เป็นสมการทันทีหลังจากพ่น HTML
         if (window.MathJax && window.MathJax.typeset) {
             window.MathJax.typeset();
         }
     }
 
+    // ฟังก์ชันตรวจคะแนนและเฉลยเหตุผล (ที่ของเดิมขาดหายไป)
     function checkQuizScore() {
         const boxes = document.querySelectorAll('.quiz-item-box');
         const nextBtn = document.getElementById('nav-next-btn');
         let total = 0;
         let ready = true;
 
+        // ตรวจว่าทำครบหรือยัง
         boxes.forEach((box, index) => {
             const check = document.querySelector(`input[name="question-${index+1}"]:checked`);
             if (!check) ready = false;
@@ -439,27 +462,32 @@
             return;
         }
 
+        // ตรวจให้คะแนน
         boxes.forEach((box, index) => {
             const chosen = document.querySelector(`input[name="question-${index+1}"]:checked`).value;
             const userChoice = (chosen === "true");
             const correctAns = (box.getAttribute('data-answer') === "true");
-            const reason = box.getAttribute('data-reason');
-            const fb = box.querySelector('.feedback-box');
             
+            // ถอดรหัส Base64 กลับมาเป็นข้อความภาษาไทยปกติ
+            const encodedReason = box.getAttribute('data-reason');
+            const reason = decodeURIComponent(escape(atob(encodedReason)));
+            
+            const fb = box.querySelector('.feedback-box');
             fb.style.display = 'block';
             
             if (userChoice === correctAns) {
                 total++;
                 fb.style.backgroundColor = '#e8f5e9';
                 fb.style.color = '#2e7d32';
-                fb.innerHTML = `<strong>ถูกต้อง</strong> — เพราะ ${reason}`;
+                fb.innerHTML = `<strong>ถูกต้อง</strong> — ${reason}`;
             } else {
                 fb.style.backgroundColor = '#ffebee';
                 fb.style.color = '#c62828';
-                fb.innerHTML = `<strong>ไม่ถูกต้อง</strong> (คำตอบที่ถูกคือ: ${correctAns ? 'เป็นฟังก์ชัน' : 'ไม่เป็นฟังก์ชัน'}) — เพราะ ${reason}`;
+                fb.innerHTML = `<strong>ไม่ถูกต้อง</strong> (คำตอบที่ถูกคือ: ${correctAns ? 'เป็นฟังก์ชัน' : 'ไม่เป็นฟังก์ชัน'}) — ${reason}`;
             }
         });
 
+        // แสดงสถิติรวมด้านล่างสุด
         const panel = document.getElementById('summary-panel');
         panel.style.display = 'block';
         
@@ -473,10 +501,6 @@
             panel.style.color = '#e65100';
             panel.innerHTML = `💡 ลองทบทวนใหม่อีกรอบ! คุณได้คะแนน ${total} / ${boxes.length}`;
             nextBtn.style.display = 'none';
-        }
-
-        if (window.MathJax && window.MathJax.typeset) {
-            window.MathJax.typeset();
         }
     }
 
